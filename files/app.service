@@ -1,0 +1,11 @@
+[Unit]
+Description=Application Service
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+ExecStart=/home/ubuntu/app.sh
+
+[Install]
+WantedBy=multi-user.target

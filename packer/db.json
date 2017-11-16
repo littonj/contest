@@ -1,0 +1,44 @@
+{
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": ""
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "name": "AWS US-EAST-1",
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "region": "us-east-1",
+      "source_ami_filter": {
+        "filters": {
+          "virtualization-type": "hvm",
+          "name": "ubuntu/images/*ubuntu-xenial-16.04-amd64-server-*",
+          "root-device-type": "ebs"
+        },
+        "owners": ["099720109477"],
+        "most_recent": true
+      },
+      "instance_type": "t2.small",
+      "ssh_username": "ubuntu",
+      "ami_name": "breakathon-db {{timestamp}}"
+    }
+  ],
+  "provisioners": [
+    {
+      "destination": "/home/ubuntu/",
+      "source": "../files/schema.sql",
+      "type": "file"
+    },
+    {
+      "inline": [
+        "sudo apt update -y",
+        "sudo DEBIAN_FRONTEND=noninteractive apt install mysql-server -y",
+        "sudo sed -i'' '/^bind-address/,+2 s.^.# .' /etc/mysql/mysql.conf.d/mysqld.cnf",
+        "sudo service mysql restart",
+        "sudo mysql < /home/ubuntu/schema.sql"
+      ],
+      "type": "shell"
+    }
+  ]
+}
