@@ -32,11 +32,6 @@
     },
     {
       "destination": "/home/ubuntu/",
-      "source": "../files/app.service",
-      "type": "file"
-    },
-    {
-      "destination": "/home/ubuntu/",
       "source": "../files/app.sh",
       "type": "file"
     },
@@ -47,13 +42,19 @@
     },
     {
       "inline": [
-        "sudo mv /home/ubuntu/app.service /etc/systemd/system",
+        "sudo apt-get update -y",
         "sudo apt update -y",
+        "sudo apt-get install apt-transport-https ca-certificates curl software-properties-common",
+        "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -",
+        "sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\"",
+        "sudo apt-get update -y",
+        "sudo apt-get install -y docker-ce",
+        "sudo sed -i -e 's/^APT::Periodic::Update-Package-Lists \"1\";$/APT::Periodic::Update-Package-Lists \"0\";/' /etc/apt/apt.conf.d/10periodic",
         "sudo apt install ruby ruby-dev libmysqlclient-dev build-essential -y",
         "sudo gem install sinatra mysql2 redis --no-rdoc --no-ri",
         "mkdir /home/ubuntu/public",
-        "sudo systemctl enable app",
-        "sudo systemctl start app"
+        "sudo systemctl enable docker",
+        "sudo systemctl start docker"
       ],
       "type": "shell"
     }
