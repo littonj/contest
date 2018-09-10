@@ -56,7 +56,7 @@ Ubuntu 16.04.
   accessible from the public Internet on ports 80 and 443.
 * jumphost1 is running an SSH server, and can connect to all of the other hosts
   via a private network. It is accessible from the public Internet on port 22.
-* app1 is running a small boutique web application.  It is only accessible via
+* app1 is running a small boutique web application in a Docker container.  It is only accessible via
   the private network.
 * db1 is running MySQL 5.6. It is only accessible via the private network.
 * cache1 is running Redis 4.0.  It is only accessible via the private network.
